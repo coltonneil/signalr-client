@@ -1,0 +1,7 @@
+<div class="group-search-container">
+  <form #searchForm="ngForm" (ngSubmit)="onSubmit(searchForm)" autocomplete="off">
+    <input type="text" name="groupdId" [(ngModel)]="groupId" required class="group-search" placeholder="Access Code"
+      #spy minlength="6" maxlength="6" autofocus (ngModelChange)="onChange()">
+    <img *ngIf=" searchForm.valid" class="submit-icon" src="./assets/submit.svg" (click)="onSubmit(searchForm)">
+  </form>
+</div>

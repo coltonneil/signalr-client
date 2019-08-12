@@ -4,17 +4,19 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SignalrClientComponent } from './signalr-client/signalr-client.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
+import { ConnectionFinderComponent } from './connection-finder/connection-finder.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SignalrClientComponent
+    SignalrClientComponent,
+    ConnectionFinderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

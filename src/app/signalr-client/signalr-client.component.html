@@ -1,2 +1,23 @@
-<input type="text" [formControl]="messageControl">
-<button (click)="sendMessage()">Send Message</button>
+<!-- <input type="text" [formControl]="messageControl"> -->
+<!-- <button (click)="sendMessage()">Send Message</button> -->
+<div *ngIf="!showPaymentForm" class="status-container">
+    <img *ngIf="!paymentComplete" class="loading-icon" src="./assets/loading.svg">
+    <img *ngIf="paymentComplete" class="success-icon" src="./assets/success.svg">
+    <span class="status">{{status}}</span>
+</div>
+<div *ngIf="showPaymentForm" class="payment-container">
+  <div class="amount">{{amount}}</div>
+  <form class="payment-form-container" #paymentForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off">
+    <div class="text-input-container">
+      <input type="text" name="cardNumber" [(ngModel)]="cardNumber" required class="text-input"
+        placeholder="Credit Card Number" #spy minlength="16" maxlength="16">
+    </div>
+    <div class="text-input-container">
+      <input type="text" name="expirationDate" [(ngModel)]="expirationDate" required class="text-input"
+        placeholder="Expiration Date" #spy minlength="5" maxlength="5">
+    </div>
+  </form>
+  <span class="submit-container">
+    <img class="submit-icon" src="./assets/submit.svg" (click)="onSubmit()">
+  </span>
+</div>

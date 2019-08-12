@@ -7,13 +7,20 @@ import * as signalR from '@aspnet/signalr';
 export class SignalrService {
   connection: signalR.HubConnection;
   connectionSuccessful: EventEmitter<void>;
+  connectionStatus: EventEmitter<string>;
+  paymentRequest: EventEmitter<string>;
+  paymentStatus: EventEmitter<void>;
+  agentConnectionId = '';
+
   constructor() {
-    this.createConnection();
+    this.connectionStatus = new EventEmitter<string>();
     this.connectionSuccessful = new EventEmitter<void>();
+    this.paymentRequest = new EventEmitter<string>();
+    this.paymentStatus = new EventEmitter<void>();
   }
 
   private createConnection(): void {
-    console.log('creating connection');
+    this.connectionStatus.emit('connecting');
     this.connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.None)
       .withUrl(`http://localhost:5000/messages`)
@@ -21,16 +28,21 @@ export class SignalrService {
   }
 
   public connect(): void {
+    this.createConnection();
     this.connection
       .start()
       .then(() => {
         this.connectionSuccessful.emit();
-        this.connection.on(`ReceiveMessage`, (payload: string) => {
-          console.log(`message recieved: ${payload}`);
+        this.connection.on(`RecievePaymentRequest`, (payload: string) => {
+          const amount = payload.split('|')[0];
+          this.agentConnectionId = payload.split('|')[1];
+          this.paymentRequest.emit(amount);
         });
-        this.connection.on(`UserConnected`, (connectionId: string) => {
-          console.log(`connected: ${connectionId}`);
+        this.connection.on(`RecievePaymentStatus`, () => {
+          this.paymentStatus.emit();
+          this.connectionStatus.emit('Payment successful');
         });
+
       })
       .catch(err => {
         return console.error(err.toString());
@@ -39,13 +51,15 @@ export class SignalrService {
 
   public joinGroup(groupName: string): void {
     this.connection.invoke(`JoinGroup`, groupName).then(() => {
-      console.log(`created group: ${groupName}`);
+      this.connectionStatus.emit('waiting for agent');
     });
   }
 
-  public sendMessage(groupName: string, message: string): void {
-    this.connection.invoke(`SendMessageToGroup`, groupName, message).then(() => {
-      console.log(`sent ${message} to group ${groupName}`);
+  public sendCardData(cardData): void {
+    this.connectionStatus.emit('sending payment information');
+    this.connection.invoke(`SendCardData`, this.agentConnectionId, cardData).then(() => {
+      this.connectionStatus.emit('payment information sent');
     });
   }
+
 }

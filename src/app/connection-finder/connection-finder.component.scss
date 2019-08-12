@@ -1,0 +1,43 @@
+.group-search-container {
+  margin-top: 10vh;
+  text-align: center;
+  form {
+    width: 260px;
+    margin: 0 auto;
+  }
+  input {
+    height: 50px;
+    width: 200px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #FFF;
+    color: #FFF;
+    font-size: 2em;
+    text-align: center;
+
+    &::placeholder {
+      color: #FFFFFF90;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  input.ng-invalid.ng-touched.ng-dirty {
+    color: red;
+    border-bottom: 3px solid red;
+  }
+
+  .submit-icon {
+    border: 2px solid #fff;
+    border-radius: 50%;
+    vertical-align: top;
+    margin: 15px;
+    position: absolute;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
