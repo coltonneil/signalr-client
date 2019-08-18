@@ -23,7 +23,7 @@ export class SignalrService {
     this.connectionStatus.emit('connecting');
     this.connection = new signalR.HubConnectionBuilder()
       .configureLogging(signalR.LogLevel.None)
-      .withUrl(`http://localhost:5000/messages`)
+      .withUrl(`https://signalr-demo-api.azurewebsites.net/messages`)
       .build();
   }
 
