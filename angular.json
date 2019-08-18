@@ -68,11 +68,12 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
             "browserTarget": "signalr-client:build",
-            "port": 4201
+            "port": 8080
           },
           "configurations": {
             "production": {
-              "browserTarget": "signalr-client:build:production"
+              "browserTarget": "signalr-client:build:production",
+              "port": 8080
             }
           }
         },
